@@ -2,7 +2,6 @@ package org.example.backwcy.service.impl;
 
 import org.example.backwcy.dao.DeviceRepository;
 import org.example.backwcy.entity.Device;
-import org.example.backwcy.entity.User;
 import org.example.backwcy.exception.DeviceNotFoundException;
 import org.example.backwcy.exception.InvalidInputException;
 import org.example.backwcy.exception.DeviceNameAlreadyExistsException;
@@ -19,23 +18,20 @@ public class DeviceServiceImpl implements DeviceService {
     private DeviceRepository deviceRepository;
 
     @Override
-    public Device addDevice(String name, User user) {
-        if (name == null || name.trim().isEmpty() || user == null) {
-            throw new InvalidInputException("设备名称和用户不能为空");
+    public Device addDevice(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new InvalidInputException("设备名称不能为空");
         }
-        if (deviceRepository.existsByNameAndUser(name, user)) {
+        if (deviceRepository.existsByName(name)) {
             throw new DeviceNameAlreadyExistsException("设备名称 '" + name + "' 已存在");
         }
-        Device device = new Device(name, user);
+        Device device = new Device(name);
         return deviceRepository.save(device);
     }
 
     @Override
-    public List<Device> getUserDevices(User user) {
-        if (user == null) {
-            throw new InvalidInputException("用户不能为空");
-        }
-        return deviceRepository.findByUser(user);
+    public List<Device> getAllDevices() {
+        return deviceRepository.findAll();
     }
 
     @Override

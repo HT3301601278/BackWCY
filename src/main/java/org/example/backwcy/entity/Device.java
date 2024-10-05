@@ -14,10 +14,6 @@ public class Device {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -26,9 +22,8 @@ public class Device {
     public Device() {
     }
 
-    public Device(String name, User user) {
+    public Device(String name) {
         this.name = name;
-        this.user = user;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -47,14 +42,6 @@ public class Device {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public LocalDateTime getCreatedAt() {
